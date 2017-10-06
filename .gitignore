@@ -1,0 +1,5 @@
+.env
+/sites-enabled/*
+/logs/*
+/sql/*
+!*.gitkeep

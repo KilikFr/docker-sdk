@@ -1,0 +1,54 @@
+version: '2'
+
+services:
+    db:
+        build: docker/mysql
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+            - ./sql:/var/lib/mysql
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        links:
+            - db
+        ports:
+            - 81:80
+
+    webscreenshot:
+        image: bobey/manet
+        ports:
+           - 8891:8891
+    php:
+        build: docker/php7-fpm-debian
+        environment:
+             FPM_UID: ${UID}
+             FPM_GID: ${GID}
+        links:
+            - db
+            - webscreenshot
+        volumes:
+            - ${SCRIPTS}:/var/www/sites
+            - ${HOMEDIR}:/var/www/home            
+
+    nginx:
+        build: docker/nginx
+        ports:
+            - 80:80
+        links:
+            - php
+        volumes_from:
+            - php
+        volumes:
+            - ./logs/nginx/:/var/log/nginx
+            - ./sites-enabled:/etc/nginx/sites-enabled
+
+    memcached:
+        image: memcached:alpine
+        ports:
+            - 11211:11211
