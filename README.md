@@ -7,6 +7,13 @@ requirements:
 
 	docker
 	git
+	make
+
+install requirements
+--------------------
+```shell
+sudo apt-get install git Make
+```
 
 install docker on debian
 ------------------------
