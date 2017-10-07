@@ -55,7 +55,7 @@ install kilik docker sdk
 commands:
 
 	cd ~
-	git clone git@github.com:kilik/docker-sdk.git docker-sdk
+	git clone https://github.com/KilikFr/docker-sdk.git docker-sdk
 
 setup your default env (file .env, replace kilik by your login):
 
